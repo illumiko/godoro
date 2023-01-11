@@ -1,16 +1,16 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"log"
-	"os/exec"
 	"strconv"
 	"time"
 )
 
 var cmd string
 var duration_tracker int
+var start_time time.Time
+var end_time time.Time
 
 // #helpers
 func flt_to_str(flt float64) string {
@@ -67,10 +67,12 @@ func pomodoro(total_duration int) error {
 			fmt.Println("Paused")
 			break
 		}
-		if total_duration == 0 {
-			cmd := exec.Command("paplay", "/usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga")
-			cmd.Run()
-			return errors.New("SESSION OVER")
+		if total_duration == 50 {
+			// cmd := exec.Command("paplay", "/usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga")
+			// cmd.Run()
+			end_time = time.Now()
+			fmt.Printf("\nstart time: %v \nend time: %v", start_time.Format(time.Kitchen), end_time.Format(time.Kitchen))
+			return nil
 		}
 	}
 	return nil
@@ -92,6 +94,7 @@ func pomodoro_start() error {
 }
 
 func main() {
+	start_time = time.Now()
 	for {
 		err := pomodoro_start()
 		fmt.Println("Hi")
