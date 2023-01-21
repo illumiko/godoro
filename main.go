@@ -70,8 +70,8 @@ func pomodoro(total_duration int) error {
 			break
 		}
 		if total_duration == 0 {
-			if runtime.GOOS == "lunux" {
-				cmd := exec.Command("paplay", "/usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga")
+			if runtime.GOOS == "linux" {
+				cmd := exec.Command("paplay", "./beep.oga")
 				cmd.Run()
 			}
 			end_time = time.Now()
