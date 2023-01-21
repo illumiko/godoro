@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
+	"os/exec"
+	"runtime"
 	"strconv"
 	"time"
 )
@@ -67,9 +69,11 @@ func pomodoro(total_duration int) error {
 			fmt.Println("Paused")
 			break
 		}
-		if total_duration == 50 {
-			// cmd := exec.Command("paplay", "/usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga")
-			// cmd.Run()
+		if total_duration == 0 {
+			if runtime.GOOS == "lunux" {
+				cmd := exec.Command("paplay", "/usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga")
+				cmd.Run()
+			}
 			end_time = time.Now()
 			fmt.Printf("\nstart time: %v \nend time: %v", start_time.Format(time.Kitchen), end_time.Format(time.Kitchen))
 			return nil
@@ -97,9 +101,11 @@ func main() {
 	start_time = time.Now()
 	for {
 		err := pomodoro_start()
-		fmt.Println("Hi")
 		if err != nil {
 			log.Fatal(err) // to end the program on total_duration == 0
+		}
+		if err == nil {
+			break
 		}
 	}
 }
